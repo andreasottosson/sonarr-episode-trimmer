@@ -1,0 +1,47 @@
+= Sonarr Episode Trimmer
+
+A script for use with Sonarr that allows you to set the number of episodes of a show that you would like to keep.
+Useful for shows that air daily.
+
+The script sorts the episodes you have for a show by the season and episode number, and then deletes the oldest episodes
+past the threshold you set.
+
+
+== Configuration
+
+Configuration is pretty straight forward as this sample config file shows. The keys under the Series section are the
+"cleanTitle" returned from the https://github.com/Sonarr/Sonarr/wiki/Series[Sonarr API]. The values are the number of
+episodes you would like to keep for the show. Add a key/value pair for each show you want to clean.
+
+-------------------------------------
+[Config]
+path = /shared/media/tv shows
+
+[API]
+url = localhost:8989
+key = XXXXX
+
+[Series]
+thedailyshow = 10
+midnight = 10
+thetonightshowstarringjimmyfallon = 10
+conan2010 = 10
+latenightwithsethmeyers = 10
+thelatelateshowwithjamescorden = 10
+thelateshowwithstephencolbert = 10
+-------------------------------------
+
+In the `[Config]` section, `path` is optional. It is used instead of the path sonarr returns to find files to delete.
+Example would be if sonarr is running inside a Docker container.
+
+
+== Usage
+-------
+usage: sonarr-episode-trimmer.py [-h] [--debug] --config CONFIG
+
+arguments:
+  -h, --help       show this help message and exit
+  --debug          Run the script in debug mode. No modifications to the
+                   sonarr library or filesystem will be made.
+  --config CONFIG  Path to the configuration file.
+-------
