@@ -15,7 +15,7 @@ episodes you would like to keep for the show. Add a key/value pair for each show
 
 -------------------------------------
 [Config]
-path = /shared/media/tv shows
+path = /path/to/series
 
 [API]
 url = localhost:8989
@@ -32,7 +32,7 @@ thelateshowwithstephencolbert = 10
 -------------------------------------
 
 In the `[Config]` section, `path` is optional. It is used instead of the path sonarr returns to find files to delete.
-Example would be if sonarr is running inside a Docker container.
+Example use case would be if sonarr is running inside a Docker container.
 
 
 == Usage
