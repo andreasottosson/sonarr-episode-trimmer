@@ -46,8 +46,9 @@ def api_request(action, params=None, method='GET', body=None):
 
 
 def unmonitor_episode(episode):
+    air_date = episode['airDate'] if 'airDate' in episode else ''
     logging.info("Unmonitoring episode: season=%s, episode=%s, airdate=%s", episode['seasonNumber'],
-                 episode['episodeNumber'], episode['airDate'])
+                 episode['episodeNumber'], air_date)
 
     if not DEBUG:
         episode['monitored'] = False
