@@ -123,6 +123,8 @@ if __name__ == '__main__':
     parser.add_argument("--debug", action='store_true', help='Run the script in debug mode. No modifications to '
                                                              'the sonarr library or filesystem will be made.')
     parser.add_argument("--config", type=str, required=True, help='Path to the configuration file.')
+    parser.add_argument("--list-series", action='store_true', help="Get a list of shows with their 'cleanTitle' for use"
+                                                                   " in the configuration file")
     args = parser.parse_args()
 
     DEBUG = args.debug
@@ -144,12 +146,19 @@ if __name__ == '__main__':
     # get all the series in the library
     series = api_request('series')
 
-    # build mapping of titles to series
-    series = {x['cleanTitle']: x for x in series}
+    # print out a list of series
+    if args.list_series:
+        series = sorted(series, key=itemgetter('title'))
+        for s in series:
+            print "%s: %s" % (s['title'], s['cleanTitle'])
+    # cleanup series
+    else:
+        # build mapping of titles to series
+        series = {x['cleanTitle']: x for x in series}
 
-    for s in CONFIG.items('Series'):
-        if s[0] in series:
-            logging.info("Processing: %s", series[s[0]]['title'])
-            clean_series(series[s[0]]['id'], int(s[1]))
-        else:
-            logging.warning("series '%s' from config not found in sonarr", s[0])
+        for s in CONFIG.items('Series'):
+            if s[0] in series:
+                logging.info("Processing: %s", series[s[0]]['title'])
+                clean_series(series[s[0]]['id'], int(s[1]))
+            else:
+                logging.warning("series '%s' from config not found in sonarr", s[0])

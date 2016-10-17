@@ -44,4 +44,6 @@ arguments:
   --debug          Run the script in debug mode. No modifications to the
                    sonarr library or filesystem will be made.
   --config CONFIG  Path to the configuration file.
+  --list-series    Get a list of shows with their 'cleanTitle' for use in the
+                   configuration file
 -------
