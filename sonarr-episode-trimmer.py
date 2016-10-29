@@ -9,9 +9,11 @@ import os
 import glob
 import ConfigParser
 import argparse
+import sys
 
 logging.basicConfig(level=logging.INFO,
-                    format='%(levelname)-8s %(message)s')
+                    format='%(levelname)-8s %(message)s',
+                    stream=sys.stdout)
 
 # setup weekly log file
 log_path = os.path.join(os.path.dirname(__file__), 'logs')
@@ -20,7 +22,7 @@ if not os.path.exists(log_path):
     os.mkdir(os.path.dirname(log_file))
 file_handler = logging.handlers.TimedRotatingFileHandler(log_file, when='D', interval=7, backupCount=4)
 file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)-8s %(message)s'))
-logging.getLogger('').addHandler(file_handler)
+logging.getLogger().addHandler(file_handler)
 
 
 # make a request to the sonarr api
@@ -134,7 +136,7 @@ if __name__ == '__main__':
 
     DEBUG = args.debug
     if DEBUG:
-        logging.getLogger('').setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging.DEBUG)
 
     # load config file
     CONFIG = ConfigParser.SafeConfigParser()
