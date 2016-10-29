@@ -10,7 +10,7 @@ import glob
 import ConfigParser
 import argparse
 
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     format='%(levelname)-8s %(message)s')
 
 # setup weekly log file
@@ -133,6 +133,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     DEBUG = args.debug
+    if DEBUG:
+        logging.getLogger('').setLevel(logging.DEBUG)
 
     # load config file
     CONFIG = ConfigParser.SafeConfigParser()
