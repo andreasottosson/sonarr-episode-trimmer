@@ -38,12 +38,17 @@ Example use case would be if sonarr is running inside a Docker container.
 == Usage
 -------
 usage: sonarr-episode-trimmer.py [-h] [--debug] --config CONFIG
+                                 [--list-series] [--custom-script]
 
-arguments:
+optional arguments:
   -h, --help       show this help message and exit
   --debug          Run the script in debug mode. No modifications to the
                    sonarr library or filesystem will be made.
   --config CONFIG  Path to the configuration file.
   --list-series    Get a list of shows with their 'cleanTitle' for use in the
                    configuration file
+  --custom-script  Run in 'Custom Script' mode. This mode is meant for adding
+                   the script to sonarr as a 'Custom Script'. It will run
+                   anytime a new episode is downloaded, but will only cleanup
+                   the series of the downloaded episode.
 -------

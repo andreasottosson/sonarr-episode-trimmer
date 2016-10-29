@@ -125,6 +125,11 @@ if __name__ == '__main__':
     parser.add_argument("--config", type=str, required=True, help='Path to the configuration file.')
     parser.add_argument("--list-series", action='store_true', help="Get a list of shows with their 'cleanTitle' for use"
                                                                    " in the configuration file")
+    parser.add_argument("--custom-script", action='store_true', help="Run in 'Custom Script' mode. This mode is meant "
+                                                                     "for adding the script to sonarr as a 'Custom "
+                                                                     "Script'. It will run anytime a new episode is "
+                                                                     "downloaded, but will only cleanup the series of "
+                                                                     "the downloaded episode.")
     args = parser.parse_args()
 
     DEBUG = args.debug
@@ -153,12 +158,31 @@ if __name__ == '__main__':
             print "%s: %s" % (s['title'], s['cleanTitle'])
     # cleanup series
     else:
-        # build mapping of titles to series
-        series = {x['cleanTitle']: x for x in series}
+        cleanup_series = []
 
-        for s in CONFIG.items('Series'):
-            if s[0] in series:
-                logging.info("Processing: %s", series[s[0]]['title'])
-                clean_series(series[s[0]]['id'], int(s[1]))
-            else:
-                logging.warning("series '%s' from config not found in sonarr", s[0])
+        # custom script mode
+        if args.custom_script:
+            # verify it was a download event
+            if os.environ['sonarr_eventtype'] == 'Download':
+                series = {x['id']: x for x in series}
+                config_series = {x[0]: x[1] for x in CONFIG.items('Series')}
+                series_id = int(os.environ['sonarr_series_id'])
+                num_episodes = int(config_series[series[series_id]['cleanTitle']])
+                title = series[series_id]['title']
+
+                cleanup_series.append((series_id, num_episodes, title))
+        # cronjob mode
+        else:
+            # build mapping of titles to series
+            series = {x['cleanTitle']: x for x in series}
+
+            for s in CONFIG.items('Series'):
+                if s[0] in series:
+                    cleanup_series.append((series[s[0]]['id'], int(s[1]), series[s[0]]['title']))
+                else:
+                    logging.warning("series '%s' from config not found in sonarr", s[0])
+
+        for s in cleanup_series:
+            logging.info("Processing: %s", s[2])
+            logging.debug("%s: %s", s[0], s[1])
+            clean_series(s[0], s[1])
