@@ -146,10 +146,12 @@ if __name__ == '__main__':
                 series = {x['id']: x for x in series}
                 config_series = {x[0]: x[1] for x in CONFIG.items('Series')}
                 series_id = int(os.environ['sonarr_series_id'])
-                num_episodes = int(config_series[series[series_id]['cleanTitle']])
-                title = series[series_id]['title']
+                # check if this episode is in a series in our config
+                if series[series_id]['cleanTitle'] in config_series:
+                    num_episodes = int(config_series[series[series_id]['cleanTitle']])
+                    title = series[series_id]['title']
 
-                cleanup_series.append((series_id, num_episodes, title))
+                    cleanup_series.append((series_id, num_episodes, title))
         # cronjob mode
         else:
             # build mapping of titles to series
