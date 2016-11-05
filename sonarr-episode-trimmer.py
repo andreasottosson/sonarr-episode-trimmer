@@ -6,7 +6,6 @@ import json
 import logging
 import logging.handlers
 import os
-import glob
 import ConfigParser
 import argparse
 import sys
@@ -98,18 +97,6 @@ def clean_series(series_id, keep_episodes):
         if not DEBUG:
             api_request('episodefile/%s' % episode_file['id'], method='DELETE')
 
-        # delete any additional files
-        path, ext = os.path.splitext(episode_file['path'])
-        path = path.replace(SONARR_PATH, ADDITIONAL_FILES_PATH)
-        for f in glob.glob(path + "*"):
-            logging.info("Deleting file: %s", f)
-            logging.debug(os.path.exists(f))
-            if not DEBUG:
-                try:
-                    os.remove(f)
-                except OSError, e:
-                    logging.error("Could not delete: %s", e.filename)
-
         # mark the episode as unmonitored
         unmonitor_episode(episode)
 
@@ -117,8 +104,6 @@ def clean_series(series_id, keep_episodes):
 if __name__ == '__main__':
     global CONFIG
     global DEBUG
-    global ADDITIONAL_FILES_PATH
-    global SONARR_PATH
 
     # parse command line arguments
     parser = argparse.ArgumentParser()
@@ -141,16 +126,6 @@ if __name__ == '__main__':
     # load config file
     CONFIG = ConfigParser.SafeConfigParser()
     CONFIG.read(args.config)
-
-    # determine base path for additional files
-    rootfolder = api_request('rootfolder')
-    SONARR_PATH = rootfolder[0]['path']
-    try:
-        ADDITIONAL_FILES_PATH = CONFIG.get('Config', 'path')
-        logging.debug("Using config path for additional files: %s", ADDITIONAL_FILES_PATH)
-    except ConfigParser.NoSectionError:
-        ADDITIONAL_FILES_PATH = SONARR_PATH
-        logging.debug("Using sonarr path for additional files: %s", ADDITIONAL_FILES_PATH)
 
     # get all the series in the library
     series = api_request('series')

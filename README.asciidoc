@@ -14,9 +14,6 @@ Configuration is pretty straight forward as this sample config file shows. The k
 episodes you would like to keep for the show. Add a key/value pair for each show you want to clean.
 
 -------------------------------------
-[Config]
-path = /path/to/series
-
 [API]
 url = localhost:8989
 key = XXXXX
@@ -30,9 +27,6 @@ latenightwithsethmeyers = 10
 thelatelateshowwithjamescorden = 10
 thelateshowwithstephencolbert = 10
 -------------------------------------
-
-In the `[Config]` section, `path` is optional. It is used instead of the path sonarr returns to find files to delete.
-Example use case would be if sonarr is running inside a Docker container.
 
 
 == Usage
@@ -52,6 +46,7 @@ optional arguments:
                    anytime a new episode is downloaded, but will only cleanup
                    the series of the downloaded episode.
 -------
+
 
 === Sonarr Custom Script
 The easiest way to use the script is to set it up as a custom script inside sonarr. This method will run the script
