@@ -52,3 +52,23 @@ optional arguments:
                    anytime a new episode is downloaded, but will only cleanup
                    the series of the downloaded episode.
 -------
+
+=== Sonarr Custom Script
+The easiest way to use the script is to set it up as a custom script inside sonarr. This method will run the script
+anytime sonarr processes a new episode.
+
+. Go to the settings page
+. Click on the *Connect* tab
+. Hit the *+* sign
+. Choose *Custom Script*
+. Fill in the settings +
+image:docs/images/sonarr_custom_script.png[sonarr custom script,550]
+** *Name*: sonarr-episode-trimmer
+** *On Grab*: No
+** *On Download*: Yes
+** *On Upgrade*: No
+** *On Rename*: No
+** *Path*: use the absolute path to the script
+** *Arguments*: `--config /absolute/path/to/config/file --custom-script`
+. Click the *Test* button. *NOTE*: This will not run the script, just verify that sonarr can find the script.
+. Click *Save*
