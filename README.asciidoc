@@ -16,6 +16,7 @@ episodes you would like to keep for the show. Add a key/value pair for each show
 -------------------------------------
 [API]
 url = localhost:8989
+url_base = /sonarr
 key = XXXXX
 
 [Series]

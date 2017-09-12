@@ -31,7 +31,8 @@ def api_request(action, params=None, method='GET', body=None):
 
     params['apikey'] = CONFIG.get('API', 'key')
 
-    url = "/api/%s?%s" % (action, urllib.urlencode(params))
+    url_base = CONFIG.get('API', 'url_base') if CONFIG.has_option('API', 'url_base') else ''
+    url = "%s/api/%s?%s" % (url_base, action, urllib.urlencode(params))
 
     conn = httplib.HTTPConnection(CONFIG.get('API', 'url'))
     conn.request(method, url, body)
