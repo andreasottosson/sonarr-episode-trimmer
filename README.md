@@ -1,4 +1,7 @@
-= Sonarr Episode Trimmer
+# Sonarr Episode Trimmer
+
+## FORKED FROM https://gitlab.com/spoatacus/sonarr-episode-trimmer
+## Quickly changed some code to make it work with latest release of Sonarr, probably not that stable.
 
 A script for use with Sonarr that allows you to set the number of episodes of a show that you would like to keep.
 Useful for shows that air daily.
@@ -7,7 +10,7 @@ The script sorts the episodes you have for a show by the season and episode numb
 past the threshold you set.
 
 
-== Configuration
+## Configuration
 
 Configuration is pretty straight forward as this sample config file shows. The keys under the Series section are the
 "cleanTitle" returned from the https://github.com/Sonarr/Sonarr/wiki/Series[Sonarr API]. The values are the number of
@@ -30,7 +33,7 @@ thelateshowwithstephencolbert = 10
 -------------------------------------
 
 
-== Usage
+## Usage
 -------
 usage: sonarr-episode-trimmer.py [-h] [--debug] --config CONFIG
                                  [--list-series] [--custom-script]
@@ -49,7 +52,7 @@ optional arguments:
 -------
 
 
-=== Sonarr Custom Script
+### Sonarr Custom Script
 The easiest way to use the script is to set it up as a custom script inside sonarr. This method will run the script
 anytime sonarr processes a new episode.
 
@@ -58,7 +61,7 @@ anytime sonarr processes a new episode.
 . Hit the *+* sign
 . Choose *Custom Script*
 . Fill in the settings +
-image:docs/images/sonarr_custom_script.png[sonarr custom script,550]
+![sonarr custom script](docs/images/sonarr_custom_script.png)
 ** *Name*: sonarr-episode-trimmer
 ** *On Grab*: No
 ** *On Download*: Yes

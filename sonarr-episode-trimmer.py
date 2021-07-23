@@ -110,7 +110,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action='store_true', help='Run the script in debug mode. No modifications to '
                                                              'the sonarr library or filesystem will be made.')
-    parser.add_argument("--config", type=str, required=True, help='Path to the configuration file.')
+    parser.add_argument("--config", type=str, required=False, help='Path to the configuration file.')
     parser.add_argument("--list-series", action='store_true', help="Get a list of shows with their 'cleanTitle' for use"
                                                                    " in the configuration file")
     parser.add_argument("--custom-script", action='store_true', help="Run in 'Custom Script' mode. This mode is meant "
@@ -126,7 +126,8 @@ if __name__ == '__main__':
 
     # load config file
     CONFIG = ConfigParser.SafeConfigParser()
-    CONFIG.read(args.config)
+    thisfolder = os.path.dirname(os.path.abspath(__file__))
+    CONFIG.read(os.path.join(thisfolder, 'config.ini'))
 
     # get all the series in the library
     series = api_request('series')
@@ -140,8 +141,11 @@ if __name__ == '__main__':
     else:
         cleanup_series = []
 
-        # custom script mode
-        if args.custom_script:
+        # custom script mode, set to False for cronjob / bash mode
+        if True:
+            # exit if Test event
+            if os.environ['sonarr_eventtype'] == 'Test':
+                sys.exit(0)
             # verify it was a download event
             if os.environ['sonarr_eventtype'] == 'Download':
                 series = {x['id']: x for x in series}
